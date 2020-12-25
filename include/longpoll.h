@@ -27,7 +27,7 @@ namespace vk
             void handler(T user_query)
             {
                 std::lock_guard<std::mutex> lock(this->mute);
-                
+
                 if(this->is_update == 1)
                 {
                     user_query();
@@ -36,7 +36,7 @@ namespace vk
             }
 
             nlohmann::ordered_json settings;
-            nlohmann::ordered_json event = { {"event_id", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"} };
+            nlohmann::ordered_json event;
 
         private:
             bool is_update;

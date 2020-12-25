@@ -19,6 +19,8 @@ namespace vk
         this->api      = vkapi;
         this->group_id = gid;
 
+        this->event = { {"event_id", "0000000000000000000000000000000000000000"} };
+
         this->get_session(gid);
 
         this->lp = std::thread(&Longpoll::longpoll, this);
@@ -74,7 +76,11 @@ namespace vk
 
             std::lock_guard<std::mutex> lock(this->mute);
 
-            if(this->event.at("event_id") != resp.at("updates")[0]["event_id"])
+            if(!(resp.find("updates") != resp.end()))
+            {
+                this->session.at("ts") = resp.at("ts");
+            }
+            else if(this->event.at("event_id") != resp.at("updates")[0]["event_id"])
             {
                 this->is_update = true;
 
