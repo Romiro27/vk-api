@@ -76,6 +76,23 @@ namespace vk
 
             std::lock_guard<std::mutex> lock(this->mute);
 
+            if(resp.find("failed") != resp.end())
+            {
+                switch(resp.at("failed").get<int>())
+                {
+                    case 1:
+                        this->session.at("ts") = resp.at("ts");
+                        break;
+
+                    case 2:
+                         continue;
+                         
+                    case 3:
+                        this->get_session(this->group_id);
+                        break;
+                }
+            }
+
             if(!(resp.find("updates") != resp.end()))
             {
                 this->session.at("ts") = resp.at("ts");
